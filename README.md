@@ -14,6 +14,8 @@
 
     3. profit!
 
+        bin/twistd -n web --class main.API_SERVER
+
 ## Running
 
 everything goes from here!

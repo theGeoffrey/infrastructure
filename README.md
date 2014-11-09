@@ -11,5 +11,10 @@
         virtualenv -p python2.7 .
         source bin/activate
         pip install -r requirements.txt
-        pip install -r geoffrey/requirements.txt
+
+    3. profit!
+
+## Running
+
+everything goes from here!
 

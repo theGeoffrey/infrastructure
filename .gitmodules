@@ -1,0 +1,3 @@
+[submodule "geoffrey"]
+	path = geoffrey
+	url = git@bitbucket.org:lightyear/geoffrey.git

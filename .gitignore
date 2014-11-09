@@ -1,0 +1,11 @@
+.Python
+bin
+include
+lib
+dump.rdb
+*.pyc
+__pycache__
+.DS_Store
+child.log
+man/
+*.sqlite

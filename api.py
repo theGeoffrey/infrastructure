@@ -1,11 +1,4 @@
-import os
-import sys
-
-# inject so we can use our geoffrey
-sys.path.insert(0, os.path.join(os.path.abspath(
-                os.path.dirname('.')), "geoffrey"))
-
-
+import fix_path
 # then import geoffrey
 from geoffrey.config import Config
 from geoffrey.api.server import GeoffreyApi, app

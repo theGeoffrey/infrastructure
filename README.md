@@ -5,7 +5,7 @@
 ## Install:
 
     1. clone with submodules:
-        git clone --depth=2 XXX
+        git clone --depth=2 --recursive XXX
     2. virtualenv with geoffrey:
 
         virtualenv -p python2.7 .

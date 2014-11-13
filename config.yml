@@ -1,2 +1,4 @@
 API_KEY: "getsIgnored"
 API_ENDPOINT: "/api"
+
+BROKER_URL: "sqla+sqlite:///celerydb.sqlite"

@@ -1,26 +1,25 @@
 import fix_path
 # then import geoffrey
-from geoffrey.config import Config
-from geoffrey.api.server import GeoffreyApi, app
+from geoffrey.config import CONFIG
+from geoffrey.api.server import GeoffreyApi, app, auth_wrapper
 
 from twisted.internet import defer
 
 
-# now patch the config_getter
-def patched_config_getter(self, request):
-    request.config = Config({"api_key": "yay",
-                             "enabled_services": ["mailchimp_subscribe"],
-                             "apps":
-                             {"mailchimp":
-                              {"API_KEY":
-                               "4f34ea944dd1e33a5452550789042f9c-us9",
-                               "DATA_CENTER": "us9",
-                               "TEST_LIST_ID": "f4b255a33a"}}})
+class CouchDBConfigGetter(object):
+    @auth_wrapper
+    def get_by_api_key(self, api_key):
+        raise NotImplemented
 
-    return defer.succeed(request)
+    @auth_wrapper
+    def get_by_public_key(self, pkey):
+        raise NotImplemented
 
 
-GeoffreyApi._get_config = patched_config_getter
+if not CONFIG.DEBUG:
+    print("NOT DEBUG")
+    GeoffreyApi.config_getter = CouchDBConfigGetter()
+
 
 # then start serving
 API_SERVER = app.resource

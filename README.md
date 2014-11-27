@@ -12,10 +12,16 @@
         source bin/activate
         pip install -r requirements.txt
 
-    3. profit!
+    3. Start celery:
+
+    	python tasks.py
+
+    4. Use:
 
         bin/twistd -n web --class main.API_SERVER
+        bin/twistd -n web --class ui.WEB_UI
 
+   
 ## Running
 
 everything goes from here!

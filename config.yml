@@ -3,6 +3,10 @@ PUBLIC_KEY: ola
 API_ENDPOINT: /api
 DEBUG: true
 
+COUCH_ADMIN_USER: "geoffreybot"
+COUCH_ADMIN_PASSWORD: BL2")<WF{a)Q7=arAAcmS|jx.[mHD|_YK\wMChv%
+COUCH_URL: "http://localhost:5984"
+
 enabled_services: 
   - mailchimp_subscribe
   - post_new_form_data

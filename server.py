@@ -3,25 +3,17 @@ from klein.app import Klein
 from twisted.web.static import File
 from wallaby.backends.couchdb import Database, DataProducer
 from twisted.internet.defer import inlineCallbacks, returnValue
-from geoffrey.config import CONFIG
-from api import API_SERVER
-
+from geoffrey.config import CONFIG, get_db_master_config
+from geoffrey.api.server import app as api_server
 import json
 import uuid
 
 
-class GeoffreyUI(Klein):
+class GeoffreyService(Klein):
     pass
 
 
-app = GeoffreyUI()
-api_server = API_SERVER()
-
-
-def _get_master_config():
-    return dict(user=CONFIG.COUCH_ADMIN_USER,
-                password=CONFIG.COUCH_ADMIN_PASSWORD,
-                url=CONFIG.COUCH_URL)
+app = GeoffreyService()
 
 
 VALIDATION_FUNC = """
@@ -41,7 +33,7 @@ def promo(request):
 @app.route("/api/create_new_instance")
 @inlineCallbacks
 def new_instance(request):
-    users_db = Database("_users", **_get_master_config())
+    users_db = Database("_users", **get_db_master_config())
 
     # Query to make sure we have access
     yield users_db.info()
@@ -57,7 +49,7 @@ def new_instance(request):
                                 "password": new_password
                          })
 
-    new_db = Database(new_db_name, **_get_master_config())
+    new_db = Database(new_db_name, **get_db_master_config())
     yield new_db.create()
 
     yield new_db.save({"_id": "_design/_auth",
@@ -90,7 +82,7 @@ def new_instance(request):
 
 @app.route('/api/', branch=True)
 def api(request):
-    return api_server
+    return api_server.resource()
 
 
 @app.route('/ui/', branch=True)

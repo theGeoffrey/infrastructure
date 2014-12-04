@@ -18,8 +18,8 @@
 
     4. Use:
 
-        bin/twistd -n web --class main.API_SERVER
-        bin/twistd -n web --class ui.WEB_UI
+
+        bin/twistd -n web --class server.resource
 
    
 ## Running

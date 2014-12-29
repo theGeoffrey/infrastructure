@@ -9,6 +9,7 @@
     "postinstall": "bin/build_npms.sh"
   },
   "dependencies": {
-    "grunt-cli": "^0.1.13"
+    "grunt-cli": "^0.1.13",
+    "geoffreyui": "dev"
   }
 }

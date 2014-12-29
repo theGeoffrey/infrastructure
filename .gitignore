@@ -10,3 +10,4 @@ child.log
 man/
 *.sqlite
 twistd.pid
+node_modules

@@ -5,7 +5,7 @@
   "repository": "",
   "private": true,
   "scripts": {
-    "preinstall": "npm link geoffreyui geoffrey/ui",
+    "preinstall": "npm link geoffrey/ui",
     "postinstall": "bin/build_npms.sh"
   },
   "dependencies": {

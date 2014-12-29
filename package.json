@@ -1,15 +1,15 @@
 {
-  "name": "geoffrey",
+  "name": "geoffrey-infrastructure",
   "version": "0.0.0",
   "description": "",
   "repository": "",
   "private": true,
   "scripts": {
-    "preinstall": "npm link geoffreyui geoffrey/ui",
+    "preinstall": "npm link geoffrey-ui geoffrey/ui",
     "postinstall": "bin/build_npms.sh"
   },
   "dependencies": {
     "grunt-cli": "^0.1.13",
-    "geoffreyui": "*"
+    "geoffrey-ui": "*"
   }
 }

@@ -5,11 +5,11 @@
   "repository": "",
   "private": true,
   "scripts": {
-    "preinstall": "npm link geoffrey-ui geoffrey/ui",
+    "preinstall": "npm link geoffreyui geoffrey/ui",
     "postinstall": "bin/build_npms.sh"
   },
   "dependencies": {
     "grunt-cli": "^0.1.13",
-    "geoffrey-ui": "*"
+    "geoffreyui": "*"
   }
 }

@@ -11,3 +11,4 @@ man/
 *.sqlite
 twistd.pid
 node_modules
+promo/dist

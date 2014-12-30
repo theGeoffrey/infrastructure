@@ -56,7 +56,7 @@ def new_instance(request):
                        "language": "javascript",
                        "validate_doc_update": VALIDATION_FUNC})
 
-    security_config = json.dumps({"admins": {"names": [CONFIG.COUCH_ADMIN_USER],
+    security_config = json.dumps({"admins": {"names": [CONFIG.COUCH_USER],
                                              "roles": ["admins"]},
                                   "members": {"names": [new_user],
                                               "roles": ["workers"]}

@@ -1,25 +1,7 @@
-API_KEY: yay
-PUBLIC_KEY: ola
-API_ENDPOINT: /api
 DEBUG: true
-
-COUCH_ADMIN_USER: "geoffreybot"
-COUCH_ADMIN_PASSWORD: BL2")<WF{a)Q7=arAAcmS|jx.[mHD|_YK\wMChv%
-COUCHDB_DOMAIN: "localhost:5984"
-
-enabled_services: 
-  - mailchimp_subscribe
-  - post_form
-
-apps:
-  mailchimp: 
-    API_KEY: 4f34ea944dd1e33a5452550789042f9c-us9
-    DATA_CENTER: us9
-    TEST_LIST_ID: f4b255a33a
-  forms:
-    API_KEY: eab9fd944139e3739e2c4e20f22b0c0fa80282ef5c601660063a7e3f497535e9
-    USERNAME: eviltrout
-    HOST: http://localhost:4000
+COUCH_USER: "geoffreybot"
+COUCH_PASSWORD: gPDh$^*P=_$"^$*uv_`ab%eP`RE{e@[R1+pmrGeL
+COUCHDB_DOMAIN: "db.thegeoffrey.com"
 
 CELERY:
   BROKER_URL: redis://localhost:6379/0

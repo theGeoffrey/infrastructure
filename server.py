@@ -25,9 +25,9 @@ VALIDATION_FUNC = """
 """
 
 
-@app.route("/")
+@app.route("/", branch=True)
 def promo(request):
-    return File('./static/index.html')
+    return File('./promo/dist/')
 
 
 @app.route("/api/create_new_instance")
@@ -56,7 +56,7 @@ def new_instance(request):
                        "language": "javascript",
                        "validate_doc_update": VALIDATION_FUNC})
 
-    security_config = json.dumps({"admins": {"names": [CONFIG.COUCH_ADMIN_USER],
+    security_config = json.dumps({"admins": {"names": [CONFIG.COUCH_USER],
                                              "roles": ["admins"]},
                                   "members": {"names": [new_user],
                                               "roles": ["workers"]}
@@ -85,7 +85,7 @@ def api(request):
     return api_server.resource()
 
 
-@app.route('/ui/', branch=True)
+@app.route('/dashboard/', branch=True)
 def statics(request):
     return File('./geoffrey/ui/dist/')
 

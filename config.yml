@@ -2,7 +2,7 @@ DEBUG: true
 
 COUCH_USER: "geoffreybot"
 COUCH_PASSWORD: gPDh$^*P=_$"^$*uv_`ab%eP`RE{e@[R1+pmrGeL
-COUCHDB_DOMAIN: "db.thegeoffrey.com"
+COUCHDB_DOMAIN: "geoffrey-db.dev"
 
 CELERY:
   BROKER_URL: redis://localhost:6379/0

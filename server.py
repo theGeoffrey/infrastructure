@@ -1,6 +1,7 @@
 import fix_path
 from klein.app import Klein
 from twisted.web.static import File
+from twisted.web import proxy
 from wallaby.backends.couchdb import Database, DataProducer
 from twisted.internet.defer import inlineCallbacks, returnValue
 from geoffrey.config import CONFIG, get_db_master_config
@@ -23,11 +24,6 @@ VALIDATION_FUNC = """
       }
   }
 """
-
-
-@app.route("/", branch=True)
-def promo(request):
-    return File('./promo/dist/')
 
 
 @app.route("/api/create_new_instance")
@@ -85,10 +81,45 @@ def api(request):
     return api_server.resource()
 
 
-@app.route('/dashboard/', branch=True)
-def statics(request):
-    return File('./geoffrey/ui/dist/')
+@app.route("/server_config.js")
+def config(request):
+    return "window.GEOF_CONFIG = {}".format(
+           json.dumps(api_server.get_server_settings()))
 
+
+if CONFIG.DEBUG:
+
+    @app.route('/assets/', branch=True)
+    def assets(request):
+        return proxy.ReverseProxyResource('localhost', 8092, '/assets')
+
+    @app.route("/assets_promo/", branch=True)
+    def assets_promo(request):
+        return proxy.ReverseProxyResource('localhost', 8093, '/assets_promo')
+
+    @app.route('/dashboard/', branch=False)
+    def dashboard(request):
+        return proxy.ReverseProxyResource('localhost', 8092, '')
+
+    @app.route("/", branch=False)
+    def promo(request):
+        return proxy.ReverseProxyResource('localhost', 8093, '')
+else:
+
+    @app.route('/assets/', branch=True)
+    def assets(request):
+        return File('./geoffrey/ui/dist/assets/')
+
+    @app.route("/assets_promo/", branch=True)
+    def assets_promo(request):
+        return File('./promo/dist/assets_promo')
+
+    @app.route('/dashboard/', branch=False)
+    def dashboard(request):
+        return File('./geoffrey/ui/dist/')
+
+    @app.route("/", branch=False)
+    def promo(request):
+        return File('./promo/dist/')
 
 resource = app.resource
-

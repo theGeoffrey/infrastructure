@@ -12,7 +12,7 @@ module.exports = {
 
   output: {
     filename: '[name].js',
-    publicPath: '/assets/'
+    publicPath: '/assets_promo/'
   },
 
   cache: false,

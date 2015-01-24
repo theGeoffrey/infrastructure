@@ -5,6 +5,8 @@ COUCHDB_DOMAIN: "geoffrey-db.dev"
 COUCHDB_LOGGER_USER:  "geoffreybot"
 COUCHDB_LOGGER_PASSWORD: test
 
+DEFAULT_SESSION_TIMEOUT: 43200
+
 CELERY:
   BROKER_URL: redis://localhost:6379/0
   CELERY_RESULT_BACKEND: redis://localhost:6379/1

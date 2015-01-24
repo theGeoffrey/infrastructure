@@ -2,6 +2,8 @@ DEBUG: true
 COUCH_USER: "geoffreybot"
 COUCH_PASSWORD: test
 COUCHDB_DOMAIN: "geoffrey-db.dev"
+COUCHDB_LOGGER_USER:  "geoffreybot"
+COUCHDB_LOGGER_PASSWORD: test
 
 CELERY:
   BROKER_URL: redis://localhost:6379/0

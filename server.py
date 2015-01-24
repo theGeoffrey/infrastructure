@@ -4,7 +4,8 @@ from twisted.web.static import File
 from twisted.web import proxy
 from wallaby.backends.couchdb import Database, DataProducer
 from twisted.internet.defer import inlineCallbacks, returnValue
-from geoffrey.config import CONFIG, get_db_master_config
+from geoffrey.config import CONFIG
+from geoffrey.helpers import get_db_master_config
 from geoffrey.api.server import app as api_server
 import json
 import uuid

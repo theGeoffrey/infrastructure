@@ -113,7 +113,7 @@ else:
 
     @app.route("/assets_promo/", branch=True)
     def assets_promo(request):
-        return File('./promo/dist/assets_promo')
+        return File('./promo/dist/assets/')
 
     @app.route('/dashboard/', branch=False)
     def dashboard(request):

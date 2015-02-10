@@ -1,12 +1,14 @@
 import fix_path
+
 from klein.app import Klein
 from twisted.web.static import File
 from twisted.web import proxy
-from wallaby.backends.couchdb import Database, DataProducer
 from twisted.internet.defer import inlineCallbacks, returnValue
+from txDiscourse import DiscourseClient
 from geoffrey.config import CONFIG
-from geoffrey.helpers import get_db_master_config
+from geoffrey.helpers import get_database_connection
 from geoffrey.api.server import app as api_server
+
 import json
 import uuid
 
@@ -30,28 +32,44 @@ VALIDATION_FUNC = """
 @app.route("/api/create_new_instance")
 @inlineCallbacks
 def new_instance(request):
-    users_db = Database("_users", **get_db_master_config())
+    users_db = get_database_connection("_users")
 
     # Query to make sure we have access
-    yield users_db.info()
+    yield users_db.infoDB()
+
+    dc_url = request.args['dc_url'][0]
+    api_key = request.args['api_key'][0]
+    username = "system"
+
+    try:
+        # set if given
+        username = request.args["username"][0]
+    except KeyError:
+        pass
+
+    # check if we can connect to the admin site with the settings
+    client = DiscourseClient(dc_url, api_key, username)
+
+    yield client.request('GET', '/admin/site_settings.json')
 
     new_db_name = "geoffrey-" + uuid.uuid4().hex
     new_user = uuid.uuid4().hex
     new_password = uuid.uuid4().hex
 
-    yield users_db.save({"_id": "org.couchdb.user:" + new_user,
-                                "name": new_user,
-                                "roles": ['geoffrey-user'],
-                                "type": "user",
-                                "password": new_password
-                         })
+    yield users_db.put("org.couchdb.user:" + new_user,
+                       data=json.dumps({"name": new_user,
+                                        "roles": ['geoffrey-user'],
+                                        "type": "user",
+                                        "password": new_password
+                                        }))
 
-    new_db = Database(new_db_name, **get_db_master_config())
-    yield new_db.create()
+    new_db = get_database_connection(new_db_name)
+    yield new_db.createDB()
 
-    yield new_db.save({"_id": "_design/_auth",
-                       "language": "javascript",
-                       "validate_doc_update": VALIDATION_FUNC})
+    yield new_db.put("_design/_auth",
+                     data=json.dumps({"language": "javascript",
+                                      "validate_doc_update": VALIDATION_FUNC}))
+
 
     security_config = json.dumps({"admins": {"names": [CONFIG.COUCH_USER],
                                              "roles": ["admins"]},
@@ -59,22 +77,20 @@ def new_instance(request):
                                               "roles": ["workers"]}
                                   })
 
-    yield new_db.request('PUT', "/_security",
-                         body=DataProducer(security_config))
+    yield new_db.put("/_security", data=security_config)
 
     # We could potentially set up continuous replication, too
-    yield new_db.save({
-        "_id": "CONFIG",
-        "dc_key": "",
-        "dc_user": "",
-        "dc_url": "",
+    yield new_db.put("CONFIG", data=json.dumps({
+        "dc_key": api_key,
+        "dc_user": username,
+        "dc_url": dc_url,
         "enabled_services": [],
         "apps": {}
-        })
+        }))
 
-    returnValue(json.dumps({"user": new_user,
-                            "password": new_password,
-                            "database": new_db_name}))
+    returnValue(json.dumps({"api_key": "{}:{}@{}".format(new_user,
+                            new_password, new_db_name),
+                            "public_key": new_db_name}))
 
 
 @app.route('/api/', branch=True)

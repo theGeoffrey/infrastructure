@@ -96,7 +96,7 @@ if CONFIG.DEBUG:
 
     @app.route("/assets_promo/", branch=True)
     def assets_promo(request):
-        return proxy.ReverseProxyResource('localhost', 8093, '/assets_promo')
+        return proxy.ReverseProxyResource('localhost', 8093, '/assets')
 
     @app.route('/dashboard/', branch=False)
     def dashboard(request):

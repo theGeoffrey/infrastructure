@@ -43,6 +43,6 @@
     "grunt-cli": "^0.1.13",
     "less-loader": "^0.7.7",
     "query-string": "^1.0.0",
-    "react-hot-loader": "^0.4.5"
+    "react-hot-loader": "^1.1.4"
   }
 }

@@ -50,8 +50,13 @@ var InstallModalTrigger = React.createClass({
   getInitialState: function () {
     return {
       state: false,
+      dc_url: '',
+      dc_url_valid: false,
+      api_key: '',
+      api_key_valid: false,
     };
   },
+
   render: function(){
     if (this.state.state === "failed"){
       return (<Modal title="Setup failed" onRequestHide={false}>
@@ -82,41 +87,60 @@ var InstallModalTrigger = React.createClass({
                 </div>
               </Modal>);
     } else {
-        return (
+      var urlBsStyle = this.state.dc_url.length ? (
+                        this.state.dc_url_valid ? 'success' : 'warning') : '',
+          keyBsStyle = this.state.api_key.length ? (
+                        this.state.api_key_valid ? 'success' : 'warning'): '',
+          buttonState = !(this.state.dc_url_valid && this.state.api_key_valid);
+      return (
             <Modal title="Beta Setup" onRequestHide={false}>
               <form onSubmit={this.onSubmit}>
                 <div className="modal-body">
                   Please provide your information, so we can start setting you up
                   <Input
                     type="text"
+                    value={this.state.dc_url}
+                    hasFeedback
+                    bsStyle={urlBsStyle}
+                    onChange={this.onUrlChange}
                     placeholder="http://discourse.example.org"
+                    help="Full URL including http:// or https://"
                     label="The Discourse URL"
-                    ref="dc_url"
-                    groupClassName="group-class"
-                    wrapperClassName="wrapper-class"
-                    labelClassName="label-class"/>
+                    ref="dc_url"/>
                   <Input
                     type="text"
                     placeholder="c62e1c8431ce3aea0eb848cf70da15f"
-                    label="The Discourse API-KEY (from /admin/key )"
+                    label="The Discourse API-KEY"
+                    help="You find this under /admin/key in your discourse"
                     ref="api_key"
-                    groupClassName="group-class"
-                    wrapperClassName="wrapper-class"
-                    labelClassName="label-class"/>
+                    value={this.state.api_key}
+                    hasFeedback
+                    bsStyle={keyBsStyle}
+                    onChange={this.onKeyChange}/>
                 </div>
                 <div className="modal-footer">
-                  <Button type="submit">Send</Button>
+                  <Button disabled={buttonState} bsStyle="primary" type="submit">Start Setup</Button>
                 </div>
               </form>
             </Modal>
           );
     }
   },
+  onUrlChange: function(){
+    var value = this.refs.dc_url.getValue().trim();
+    this.setState({dc_url: value, dc_url_valid: /^https?:\/\/.*$/.test(value)});
+  },
+  onKeyChange: function(){
+    var value = this.refs.api_key.getValue().trim();
+    this.setState({api_key: value, api_key_valid: value.length == 64});
+  },
   onSubmit: function(evt){
     evt.preventDefault();
+    if (!this.state.dc_url_valid || !this.state.api_key_valid) return;
+
     this.setState({"state": "running"});
-    var api_key = this.refs["api_key"].getValue(),
-        dc_url = this.refs['dc_url'].getValue();
+    var api_key = this.state.dc_url
+        dc_url = this.state.api_key;
     $.getJSON("/api/create_new_instance?api_key=" + api_key + "&dc_url=" + dc_url,
         function(res){
           this.setState({"state": "done", "result": res});

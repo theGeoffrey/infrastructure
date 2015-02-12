@@ -125,7 +125,7 @@ else:
 
     @app.route('/assets/', branch=True)
     def assets(request):
-        return File('./geoffrey/ui/dist/assets/')
+        return File('./ui-dist/assets/')
 
     @app.route("/assets_promo/", branch=True)
     def assets_promo(request):
@@ -133,7 +133,7 @@ else:
 
     @app.route('/dashboard/', branch=False)
     def dashboard(request):
-        return File('./geoffrey/ui/dist/')
+        return File('./ui-dist/')
 
     @app.route("/", branch=False)
     def promo(request):

@@ -100,8 +100,9 @@ def api(request):
 
 @app.route("/server_config.js")
 def config(request):
-    return "window.GEOF_CONFIG = {}".format(
-           json.dumps(api_server.get_server_settings()))
+    return api_server.get_server_settings(request
+            ).addCallback(json.dumps
+            ).addCallback(lambda s: "window.GEOF_CONFIG = {}".format(s))
 
 
 if CONFIG.DEBUG:
